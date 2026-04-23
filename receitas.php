@@ -10,6 +10,22 @@
 </head>
 
 <body>
+
+    <form method="GET">
+        Data: <input type="date" name="data">
+
+        Tipo:
+        <select name="tipo">
+            <option value="">Todos</option>
+            <option value="doce">Doce</option>
+            <option value="salgada">Salgada</option>
+        </select>
+
+        <button type="submit">Filtrar</button>
+    </form>
+
+    <a href="exportar_pdf.php">Exportar PDF</a>
+
     <?php
         include("conexao.php");
         
@@ -34,6 +50,39 @@
 
         <?php
             $result = pg_query($conn, "SELECT * FROM receita");
+
+            $where = [];
+
+            if (!empty($_GET['data'])) {
+                $data = $_GET['data'];
+                $where[] = "data_registro = '$data'";
+            }
+            
+            if (!empty($_GET['tipo'])) {
+                $tipo = $_GET['tipo'];
+                $where[] = "tipo_receita = '$tipo'";
+            }
+            
+            $query = "SELECT * FROM receita";
+            
+            if (count($where) > 0) {
+                $query .= " WHERE " . implode(" AND ", $where);
+            }
+            
+            $result = pg_query($conn, $query);
+
+            while ($row = pg_fetch_assoc($result)) {
+                echo "<tr>
+                    <td>{$row['nome']}</td>
+                    <td>{$row['descricao']}</td>
+                    <td>{$row['custo']}</td>
+                    <td>{$row['tipo_receita']}</td>
+                    <td>
+                        <a href='editar.php?id={$row['id']}'>Editar</a> |
+                        <a href='excluir.php?id={$row['id']}'>Excluir</a>
+                    </td>
+                </tr>";
+            }
 
             while ($row = pg_fetch_assoc($result)) {
                 echo "<tr>
