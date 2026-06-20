@@ -26,6 +26,16 @@ pipeline {
             }
         }
 
+        stage('Qualidade de Código') {
+            steps {
+                sh '''
+                    php vendor/bin/phpcs \
+                    --ignore=vendor/*,tests/* \
+                    .
+                '''
+            }
+        }
+
         stage('Deploy Homologação') {
             steps {
                 sh '''
