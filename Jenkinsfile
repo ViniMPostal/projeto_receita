@@ -6,8 +6,7 @@ pipeline {
 
         stage('Clone') {
             steps {
-                git branch: 'main',
-                    url: 'https://github.com/ViniMPostal/projeto_receita.git'
+                git branch: 'main', url: 'https://github.com/ViniMPostal/projeto_receita.git'
             }
         }
 
@@ -41,7 +40,8 @@ pipeline {
                 sh '''
                     ssh -o StrictHostKeyChecking=no univates@177.44.248.92 "
                         cd ~/homolog/projeto_receita &&
-                        git pull origin main &&
+                        git fetch origin &&
+                        git reset --hard origin/main &&
                         sudo docker ps -a --format '{{.Names}}' | grep 'homolog-app' | xargs -r sudo docker rm -f &&
                         sudo docker-compose -p homolog up -d --no-deps --build app
                     "
@@ -49,5 +49,24 @@ pipeline {
             }
         }
 
+        stage('Aprovação Produção') {
+            steps {
+                input 'Homologação validada. Deseja publicar em Produção?'
+            }
+        }
+
+        stage('Deploy Produção') {
+            steps {
+                sh '''
+                    ssh -o StrictHostKeyChecking=no univates@177.44.248.92 "
+                        cd ~/producao/projeto_receita &&
+                        git fetch origin &&
+                        git reset --hard origin/main &&
+                        sudo docker ps -a --format '{{.Names}}' | grep 'producao-app' | xargs -r sudo docker rm -f &&
+                        sudo docker-compose -p producao up -d --no-deps --build app
+                    "
+                '''
+            }
+        }
     }
 }
