@@ -21,21 +21,21 @@
     </form>
 
     <?php
-            if ($_POST) {
-                $login = $_POST['login'];
-                $senha = $_POST['senha'];
-            
-                $query = "SELECT * FROM usuario WHERE login='$login' AND senha='$senha'";
-                $result = pg_query($conn, $query);
-            
-                if (pg_num_rows($result) > 0) {
-                    $_SESSION['login'] = $login;
-                    header("Location: receitas.php");
-                } else {
-                    echo "Login inválido";
-                }
-            }
-        ?>
+    if ($_POST) {
+        $login = $_POST['login'];
+        $senha = $_POST['senha'];
+
+        $query = "SELECT * FROM usuario WHERE login='$login' AND senha='$senha'";
+        $result = pg_query($conn, $query);
+
+        if (pg_num_rows($result) > 0) {
+            $_SESSION['login'] = $login;
+            header("Location: receitas.php");
+        } else {
+            echo "Login inválido";
+        }
+    }
+    ?>
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.8/dist/js/bootstrap.bundle.min.js"
         integrity="sha384-FKyoEForCGlyvwx9Hj09JcYn3nv7wiPVlz7YYwJrWVcXK/BmnVDxM+D2scQbITxI" crossorigin="anonymous">
     </script>

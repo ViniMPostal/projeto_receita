@@ -12,7 +12,7 @@
 <body>
     <?php
         include("conexao.php");
-        
+
         $id = $_GET['id'];
         $result = pg_query($conn, "SELECT * FROM receita WHERE id=$id");
         $receita = pg_fetch_assoc($result);
@@ -29,8 +29,12 @@
 
         Tipo:
         <select name="tipo">
-            <option value="doce" <?php if($receita['tipo_receita']=="doce") echo "selected"; ?>>Doce</option>
-            <option value="salgada" <?php if($receita['tipo_receita']=="salgada") echo "selected"; ?>>Salgada</option>
+            <option value="doce" <?php if ($receita['tipo_receita'] == "doce") {
+                echo "selected";
+                                 } ?>>Doce</option>
+            <option value="salgada" <?php if ($receita['tipo_receita'] == "salgada") {
+                echo "selected";
+                                    } ?>>Salgada</option>
         </select><br>
 
         <button type="submit">Atualizar</button>

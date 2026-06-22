@@ -28,10 +28,10 @@
 
     <?php
         include("conexao.php");
-        
-        if (!isset($_SESSION['login'])) {
-            header("Location: login.php");
-        }
+
+    if (!isset($_SESSION['login'])) {
+        header("Location: login.php");
+    }
     ?>
 
     <h2>Receitas</h2>
@@ -53,26 +53,26 @@
 
             $where = [];
 
-            if (!empty($_GET['data'])) {
-                $data = $_GET['data'];
-                $where[] = "data_registro = '$data'";
-            }
-            
-            if (!empty($_GET['tipo'])) {
-                $tipo = $_GET['tipo'];
-                $where[] = "tipo_receita = '$tipo'";
-            }
-            
+        if (!empty($_GET['data'])) {
+            $data = $_GET['data'];
+            $where[] = "data_registro = '$data'";
+        }
+
+        if (!empty($_GET['tipo'])) {
+            $tipo = $_GET['tipo'];
+            $where[] = "tipo_receita = '$tipo'";
+        }
+
             $query = "SELECT * FROM receita";
-            
-            if (count($where) > 0) {
-                $query .= " WHERE " . implode(" AND ", $where);
-            }
-            
+
+        if (count($where) > 0) {
+            $query .= " WHERE " . implode(" AND ", $where);
+        }
+
             $result = pg_query($conn, $query);
 
-            while ($row = pg_fetch_assoc($result)) {
-                echo "<tr>
+        while ($row = pg_fetch_assoc($result)) {
+            echo "<tr>
                     <td>{$row['nome']}</td>
                     <td>{$row['descricao']}</td>
                     <td>{$row['custo']}</td>
@@ -82,10 +82,10 @@
                         <a href='excluir.php?id={$row['id']}'>Excluir</a>
                     </td>
                 </tr>";
-            }
+        }
 
-            while ($row = pg_fetch_assoc($result)) {
-                echo "<tr>
+        while ($row = pg_fetch_assoc($result)) {
+            echo "<tr>
                     <td>{$row['nome']}</td>
                     <td>{$row['descricao']}</td>
                     <td>{$row['custo']}</td>
@@ -95,7 +95,7 @@
                         <a href='excluir.php?id={$row['id']}'>Excluir</a>
                     </td>
                 </tr>";
-            }
+        }
         ?>
     </table>
 
