@@ -2,145 +2,107 @@
 
 use PHPUnit\Framework\TestCase;
 
+require_once __DIR__ . '/../src/ReceitaValidator.php';
+
 class ReceitaTest extends TestCase
 {
-    // 1
-    public function testNomeNaoVazio()
+    public function testNomeValido()
     {
-        $nome = "Bolo";
-        $this->assertNotEmpty($nome);
+        $this->assertTrue(ReceitaValidator::nomeValido('Coxinha'));
     }
 
-    // 2
-    public function testDescricaoNaoVazia()
+    public function testNomeMuitoCurto()
     {
-        $desc = "Doce";
-        $this->assertNotEmpty($desc);
+        $this->assertFalse(ReceitaValidator::nomeValido('A'));
     }
 
-    // 3
-    public function testCustoMaiorQueZero()
+    public function testNomeVazio()
     {
-        $custo = 10;
-        $this->assertGreaterThan(0, $custo);
+        $this->assertFalse(ReceitaValidator::nomeValido(''));
     }
 
-    // 4
-    public function testTipoDoce()
+    public function testNomeComEspacos()
     {
-        $tipo = "doce";
-        $this->assertEquals("doce", $tipo);
+        $this->assertFalse(ReceitaValidator::nomeValido('   '));
     }
 
-    // 5
-    public function testTipoSalgada()
+    public function testDescricaoValida()
     {
-        $tipo = "salgada";
-        $this->assertEquals("salgada", $tipo);
+        $this->assertTrue(ReceitaValidator::descricaoValida('Salgado de frango'));
     }
 
-    // 6
+    public function testDescricaoVazia()
+    {
+        $this->assertFalse(ReceitaValidator::descricaoValida(''));
+    }
+
+    public function testDescricaoMuitoCurta()
+    {
+        $this->assertFalse(ReceitaValidator::descricaoValida('abc'));
+    }
+
+    public function testCustoValidoInteiro()
+    {
+        $this->assertTrue(ReceitaValidator::custoValido(10));
+    }
+
+    public function testCustoValidoDecimal()
+    {
+        $this->assertTrue(ReceitaValidator::custoValido(10.50));
+    }
+
+    public function testCustoZero()
+    {
+        $this->assertFalse(ReceitaValidator::custoValido(0));
+    }
+
+    public function testCustoNegativo()
+    {
+        $this->assertFalse(ReceitaValidator::custoValido(-5));
+    }
+
+    public function testCustoNaoNumerico()
+    {
+        $this->assertFalse(ReceitaValidator::custoValido('abc'));
+    }
+
+    public function testTipoDoceValido()
+    {
+        $this->assertTrue(ReceitaValidator::tipoValido('doce'));
+    }
+
+    public function testTipoSalgadaValido()
+    {
+        $this->assertTrue(ReceitaValidator::tipoValido('salgada'));
+    }
+
     public function testTipoInvalido()
     {
-        $tipo = "bebida";
-        $this->assertNotEquals("doce", $tipo);
+        $this->assertFalse(ReceitaValidator::tipoValido('bebida'));
     }
 
-    // 7
-    public function testLoginValido()
+    public function testTipoVazio()
     {
-        $login = "admin";
-        $this->assertEquals("admin", $login);
+        $this->assertFalse(ReceitaValidator::tipoValido(''));
     }
 
-    // 8
-    public function testSenhaNaoVazia()
-    {
-        $senha = "123";
-        $this->assertNotEmpty($senha);
-    }
-
-    // 9
-    public function testCustoDecimal()
-    {
-        $custo = 10.50;
-        $this->assertIsFloat($custo);
-    }
-
-    // 10
     public function testDataValida()
     {
-        $data = "2025-01-01";
-        $this->assertMatchesRegularExpression("/\d{4}-\d{2}-\d{2}/", $data);
+        $this->assertTrue(ReceitaValidator::dataValida('2026-06-22'));
     }
 
-    // 11
-    public function testNomeString()
+    public function testDataComFormatoBrasileiroInvalida()
     {
-        $nome = "Coxinha";
-        $this->assertIsString($nome);
+        $this->assertFalse(ReceitaValidator::dataValida('22/06/2026'));
     }
 
-    // 12
-    public function testDescricaoString()
+    public function testDataSemSeparadorInvalida()
     {
-        $desc = "Salgado";
-        $this->assertIsString($desc);
+        $this->assertFalse(ReceitaValidator::dataValida('20260622'));
     }
 
-    // 13
-    public function testCustoNumerico()
+    public function testDataVazia()
     {
-        $custo = 20;
-        $this->assertIsNumeric($custo);
-    }
-
-    // 14
-    public function testTipoNaoVazio()
-    {
-        $tipo = "doce";
-        $this->assertNotEmpty($tipo);
-    }
-
-    // 15
-    public function testUsuarioAtivo()
-    {
-        $situacao = true;
-        $this->assertTrue($situacao);
-    }
-
-    // 16
-    public function testUsuarioInativo()
-    {
-        $situacao = false;
-        $this->assertFalse($situacao);
-    }
-
-    // 17
-    public function testNomeMinimo()
-    {
-        $nome = "A";
-        $this->assertGreaterThanOrEqual(1, strlen($nome));
-    }
-
-    // 18
-    public function testDescricaoMinima()
-    {
-        $desc = "B";
-        $this->assertGreaterThanOrEqual(1, strlen($desc));
-    }
-
-    // 19
-    public function testTipoValido()
-    {
-        $tipo = "doce";
-        $this->assertContains($tipo, ["doce", "salgada"]);
-    }
-
-    // 20
-    public function testCustoNaoNegativo()
-    {
-        $custo = 5;
-        $this->assertGreaterThanOrEqual(0, $custo);
+        $this->assertFalse(ReceitaValidator::dataValida(''));
     }
 }
