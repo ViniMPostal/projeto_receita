@@ -44,7 +44,7 @@ pipeline {
                         git reset --hard origin/main &&
                         sudo docker ps -a --format '{{.Names}}' | grep 'homolog-app' | xargs -r sudo docker rm -f &&
                         sudo docker-compose -p homolog up -d --no-deps --build app &&
-                        sudo docker exec homolog-db psql -U postgres -d tabela_receita -f /docker-entrypoint-initdb.d/003_add_observacao_receita.sql
+                        sudo docker exec -i homolog-db psql -U postgres -d tabela_receita < database/003_add_observacao_receita.sql
                     "
                 '''
             }
@@ -65,7 +65,7 @@ pipeline {
                         git reset --hard origin/main &&
                         sudo docker ps -a --format '{{.Names}}' | grep 'producao-app' | xargs -r sudo docker rm -f &&
                         sudo docker-compose -p producao up -d --no-deps --build app &&
-                        sudo docker exec producao-db psql -U postgres -d tabela_receita -f /docker-entrypoint-initdb.d/003_add_observacao_receita.sql
+                        sudo docker exec -i producao-db psql -U postgres -d tabela_receita < database/003_add_observacao_receita.sql
                     "
                 '''
             }
