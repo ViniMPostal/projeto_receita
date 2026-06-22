@@ -1,3 +1,4 @@
+<?php include("conexao.php"); ?>
 <!doctype html>
 <html lang="pt-br">
 
@@ -10,7 +11,6 @@
 </head>
 
 <body>
-    <?php include("conexao.php"); ?>
 
     <h2>Login - Ambiente atualizado via Jenkins</h2>
 
