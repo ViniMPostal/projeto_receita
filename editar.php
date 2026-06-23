@@ -28,40 +28,50 @@ $receita = pg_fetch_assoc($result);
 
 <body>
 
-    <h2>Editar Receita</h2>
+    <div class="page-container">
+        <div class="card-app">
+            <h2 class="page-title">Editar Receita</h2>
 
-    <form action="atualizar.php" method="POST">
+            <form action="atualizar.php" method="POST">
+                <input type="hidden" name="id" value="<?php echo $receita['id']; ?>">
 
-        <input type="hidden" name="id" value="<?php echo $receita['id']; ?>">
+                <div class="mb-3">
+                    <label class="form-label">Nome</label>
+                    <input type="text" name="nome" class="form-control" value="<?php echo $receita['nome']; ?>">
+                </div>
 
-        Nome:
-        <input type="text" name="nome" value="<?php echo $receita['nome']; ?>">
-        <br>
+                <div class="mb-3">
+                    <label class="form-label">Descrição</label>
+                    <input type="text" name="descricao" class="form-control"
+                        value="<?php echo $receita['descricao']; ?>">
+                </div>
 
-        Descrição:
-        <input type="text" name="descricao" value="<?php echo $receita['descricao']; ?>">
-        <br>
+                <div class="mb-3">
+                    <label class="form-label">Custo</label>
+                    <input type="number" step="0.01" name="custo" class="form-control"
+                        value="<?php echo $receita['custo']; ?>">
+                </div>
 
-        Custo:
-        <input type="number" step="0.01" name="custo" value="<?php echo $receita['custo']; ?>">
-        <br>
+                <div class="mb-3">
+                    <label class="form-label">Tipo</label>
+                    <select name="tipo" class="form-select">
+                        <option value="doce" <?php if ($receita['tipo_receita'] == 'doce') echo 'selected'; ?>>
+                            Doce
+                        </option>
 
-        Tipo:
-        <select name="tipo">
-            <option value="doce" <?php if ($receita['tipo_receita'] == 'doce') echo 'selected'; ?>>
-                Doce
-            </option>
+                        <option value="salgada" <?php if ($receita['tipo_receita'] == 'salgada') echo 'selected'; ?>>
+                            Salgada
+                        </option>
+                    </select>
+                </div>
 
-            <option value="salgada" <?php if ($receita['tipo_receita'] == 'salgada') echo 'selected'; ?>>
-                Salgada
-            </option>
-        </select>
-
-        <br>
-
-        <button type="submit">Atualizar</button>
-
-    </form>
+                <div class="form-actions">
+                    <button type="submit" class="btn btn-primary">Atualizar</button>
+                    <a href="receitas.php" class="btn btn-secondary">Voltar</a>
+                </div>
+            </form>
+        </div>
+    </div>
 
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.8/dist/js/bootstrap.bundle.min.js"
         integrity="sha384-FKyoEForCGlyvwx9Hj09JcYn3nv7wiPVlz7YYwJrWVcXK/BmnVDxM+D2scQbITxI" crossorigin="anonymous">

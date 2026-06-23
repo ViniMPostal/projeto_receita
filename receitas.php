@@ -43,50 +43,62 @@ $result = pg_query($conn, $query);
 
 <body>
 
-    <form method="GET">
-        Data: <input type="date" name="data">
+    <div class="page-container">
+        <div class="card-app">
+            <div class="top-actions">
+                <h2>Receitas</h2>
 
-        Tipo:
-        <select name="tipo">
-            <option value="">Todos</option>
-            <option value="doce">Doce</option>
-            <option value="salgada">Salgada</option>
-        </select>
+                <div>
+                    <a href="cadastrar.php" class="btn btn-success btn-sm">Nova Receita</a>
+                    <a href="exportar_pdf.php" class="btn btn-secondary btn-sm">Exportar PDF</a>
+                    <a href="logout.php" class="btn btn-danger btn-sm">Sair</a>
+                </div>
+            </div>
 
-        <button type="submit">Filtrar</button>
-    </form>
+            <form method="GET" class="filter-form">
+                <div>
+                    <label class="form-label">Data</label>
+                    <input type="date" name="data" class="form-control">
+                </div>
 
-    <a href="exportar_pdf.php">Exportar PDF</a>
+                <div>
+                    <label class="form-label">Tipo</label>
+                    <select name="tipo" class="form-select">
+                        <option value="">Todos</option>
+                        <option value="doce">Doce</option>
+                        <option value="salgada">Salgada</option>
+                    </select>
+                </div>
 
-    <h2>Receitas</h2>
+                <button type="submit" class="btn btn-primary">Filtrar</button>
+            </form>
 
-    <a href="cadastrar.php">Nova Receita</a> |
-    <a href="logout.php">Sair</a>
+            <table class="table table-bordered table-striped">
+                <tr>
+                    <th>Nome</th>
+                    <th>Descrição</th>
+                    <th>Custo</th>
+                    <th>Tipo</th>
+                    <th>Ações</th>
+                </tr>
 
-    <table border="1">
-        <tr>
-            <th>Nome</th>
-            <th>Descrição</th>
-            <th>Custo</th>
-            <th>Tipo</th>
-            <th>Ações</th>
-        </tr>
-
-        <?php
-        while ($row = pg_fetch_assoc($result)) {
-            echo "<tr>
-                    <td>{$row['nome']}</td>
-                    <td>{$row['descricao']}</td>
-                    <td>{$row['custo']}</td>
-                    <td>{$row['tipo_receita']}</td>
-                    <td>
-                        <a href='editar.php?id={$row['id']}'>Editar</a> |
-                        <a href='excluir.php?id={$row['id']}'>Excluir</a>
-                    </td>
-                </tr>";
-        }
-        ?>
-    </table>
+                <?php
+                while ($row = pg_fetch_assoc($result)) {
+                    echo "<tr>
+                            <td>{$row['nome']}</td>
+                            <td>{$row['descricao']}</td>
+                            <td>R$ {$row['custo']}</td>
+                            <td>{$row['tipo_receita']}</td>
+                            <td class='table-actions'>
+                                <a href='editar.php?id={$row['id']}' class='btn btn-warning btn-sm'>Editar</a>
+                                <a href='excluir.php?id={$row['id']}' class='btn btn-danger btn-sm'>Excluir</a>
+                            </td>
+                        </tr>";
+                }
+                ?>
+            </table>
+        </div>
+    </div>
 
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.8/dist/js/bootstrap.bundle.min.js"
         integrity="sha384-FKyoEForCGlyvwx9Hj09JcYn3nv7wiPVlz7YYwJrWVcXK/BmnVDxM+D2scQbITxI" crossorigin="anonymous">

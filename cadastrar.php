@@ -23,37 +23,41 @@ if (!isset($_SESSION['login'])) {
 
 <body>
 
-    <h2>Nova Receita</h2>
+    <div class="page-container">
+        <div class="card-app">
+            <h2 class="page-title">Nova Receita</h2>
 
-    <form action="salvar.php" method="POST">
+            <form action="salvar.php" method="POST">
+                <div class="mb-3">
+                    <label class="form-label">Nome</label>
+                    <input type="text" name="nome" class="form-control">
+                </div>
 
-        Nome:
-        <input type="text" name="nome">
-        <br>
+                <div class="mb-3">
+                    <label class="form-label">Descrição</label>
+                    <input type="text" name="descricao" class="form-control">
+                </div>
 
-        Descrição:
-        <input type="text" name="descricao">
-        <br>
+                <div class="mb-3">
+                    <label class="form-label">Custo</label>
+                    <input type="number" step="0.01" name="custo" class="form-control">
+                </div>
 
-        Custo:
-        <input type="number" step="0.01" name="custo">
-        <br>
+                <div class="mb-3">
+                    <label class="form-label">Tipo</label>
+                    <select name="tipo" class="form-select">
+                        <option value="doce">Doce</option>
+                        <option value="salgada">Salgada</option>
+                    </select>
+                </div>
 
-        Tipo:
-        <select name="tipo">
-            <option value="doce">Doce</option>
-            <option value="salgada">Salgada</option>
-        </select>
-
-        <br>
-
-        <button type="submit">Salvar</button>
-
-    </form>
-
-    <br>
-
-    <a href="receitas.php">Voltar</a>
+                <div class="form-actions">
+                    <button type="submit" class="btn btn-primary">Salvar</button>
+                    <a href="receitas.php" class="btn btn-secondary">Voltar</a>
+                </div>
+            </form>
+        </div>
+    </div>
 
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.8/dist/js/bootstrap.bundle.min.js"
         integrity="sha384-FKyoEForCGlyvwx9Hj09JcYn3nv7wiPVlz7YYwJrWVcXK/BmnVDxM+D2scQbITxI" crossorigin="anonymous">
