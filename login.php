@@ -34,7 +34,7 @@ if ($_POST) {
 
 <body>
 
-    <h2>Login - Ambiente atualizado via Jenkins</h2>
+    <h2>Login</h2>
 
     <?php if (!empty($erro)) { ?>
     <p style="color:red;"><?php echo $erro; ?></p>
