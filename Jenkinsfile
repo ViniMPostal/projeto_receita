@@ -2,6 +2,14 @@ pipeline {
 
     agent any
 
+    parameters {
+        choice(
+            name: 'AMBIENTE',
+            choices: ['homologacao', 'producao', 'todos'],
+            description: 'Escolha qual ambiente deseja criar ou atualizar'
+        )
+    }
+
     stages {
 
         stage('Clone') {
@@ -35,35 +43,56 @@ pipeline {
             }
         }
 
-        stage('Deploy Homologação') {
+        stage('Preparar VM') {
             steps {
                 sh '''
                     ssh -o StrictHostKeyChecking=no univates@177.44.248.92 "
-                        cd ~/homolog/projeto_receita &&
-                        git fetch origin &&
-                        git reset --hard origin/main &&
-                        sudo docker ps -a --format '{{.Names}}' | grep 'homolog-app' | xargs -r sudo docker rm -f &&
-                        sudo docker-compose -f docker-compose.homolog.yml -p homolog up -d --no-deps --build app
+                        sudo apt update &&
+                        sudo apt install -y docker.io docker-compose git &&
+                        sudo systemctl enable docker &&
+                        sudo systemctl start docker
                     "
                 '''
             }
         }
 
-        stage('Aprovação Produção') {
-            steps {
-                input 'Homologação validada. Deseja publicar em Produção?'
+        stage('Criar Homologação') {
+            when {
+                expression {
+                    params.AMBIENTE == 'homologacao' || params.AMBIENTE == 'todos'
+                }
             }
-        }
-
-        stage('Deploy Produção') {
             steps {
                 sh '''
                     ssh -o StrictHostKeyChecking=no univates@177.44.248.92 "
+                        rm -rf ~/projeto_receita ~/homolog &&
+                        git clone https://github.com/ViniMPostal/projeto_receita.git ~/projeto_receita &&
+                        mkdir -p ~/homolog &&
+                        cp -r ~/projeto_receita ~/homolog/ &&
+                        cd ~/homolog/projeto_receita &&
+                        chmod +x setup_homolog.sh &&
+                        ./setup_homolog.sh
+                    "
+                '''
+            }
+        }
+
+        stage('Criar Produção') {
+            when {
+                expression {
+                    params.AMBIENTE == 'producao' || params.AMBIENTE == 'todos'
+                }
+            }
+            steps {
+                sh '''
+                    ssh -o StrictHostKeyChecking=no univates@177.44.248.92 "
+                        rm -rf ~/projeto_receita ~/producao &&
+                        git clone https://github.com/ViniMPostal/projeto_receita.git ~/projeto_receita &&
+                        mkdir -p ~/producao &&
+                        cp -r ~/projeto_receita ~/producao/ &&
                         cd ~/producao/projeto_receita &&
-                        git fetch origin &&
-                        git reset --hard origin/main &&
-                        sudo docker ps -a --format '{{.Names}}' | grep 'producao-app' | xargs -r sudo docker rm -f &&
-                        sudo docker-compose -f docker-compose.producao.yml -p producao up -d --no-deps --build app
+                        chmod +x setup_producao.sh &&
+                        ./setup_producao.sh
                     "
                 '''
             }
