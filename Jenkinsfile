@@ -43,7 +43,7 @@ pipeline {
                         git fetch origin &&
                         git reset --hard origin/main &&
                         sudo docker ps -a --format '{{.Names}}' | grep 'homolog-app' | xargs -r sudo docker rm -f &&
-                        sudo docker-compose -p homolog up -d --no-deps --build app
+                        sudo docker-compose -f docker-compose.homolog.yml -p homolog up -d --no-deps --build app
                     "
                 '''
             }
@@ -63,7 +63,7 @@ pipeline {
                         git fetch origin &&
                         git reset --hard origin/main &&
                         sudo docker ps -a --format '{{.Names}}' | grep 'producao-app' | xargs -r sudo docker rm -f &&
-                        sudo docker-compose -p producao up -d --no-deps --build app
+                        sudo docker-compose -f docker-compose.producao.yml -p producao up -d --no-deps --build app
                     "
                 '''
             }
