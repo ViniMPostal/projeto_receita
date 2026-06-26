@@ -1,0 +1,2 @@
+ALTER TABLE receita
+ADD COLUMN IF NOT EXISTS observacao VARCHAR(255);
