@@ -71,8 +71,7 @@ pipeline {
                         cp -r ~/projeto_receita ~/homolog/ &&
                         cd ~/homolog/projeto_receita &&
                         chmod +x setup_homolog.sh &&
-                        ./setup_homolog.sh &&
-                        sudo docker exec -i homolog-db psql -U postgres -d tabela_receita < ~/homolog/projeto_receita/database/003_add_observacao_receita.sql
+                        ./setup_homolog.sh
                     "
                 '''
             }
@@ -93,8 +92,7 @@ pipeline {
                         cp -r ~/projeto_receita ~/producao/ &&
                         cd ~/producao/projeto_receita &&
                         chmod +x setup_producao.sh &&
-                        ./setup_producao.sh &&
-                        sudo docker exec -i producao-db psql -U postgres -d tabela_receita < ~/producao/projeto_receita/database/003_add_observacao_receita.sql
+                        ./setup_producao.sh
                     "
                 '''
             }
