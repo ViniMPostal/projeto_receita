@@ -72,7 +72,8 @@ pipeline {
                         cd ~/homolog/projeto_receita &&
                         chmod +x setup_homolog.sh &&
                         ./setup_homolog.sh &&
-                        sudo docker exec -i homolog-db psql -U postgres -d tabela_receita < database/003_create_auditoria_receita.sql
+                        cat database/003_create_auditoria_receita.sql | \
+                        sudo docker exec -i homolog-db psql -U postgres -d tabela_receita
                     "
                 '''
             }
@@ -94,7 +95,8 @@ pipeline {
                         cd ~/producao/projeto_receita &&
                         chmod +x setup_producao.sh &&
                         ./setup_producao.sh &&
-                        sudo docker exec -i producao-db psql -U postgres -d tabela_receita < database/003_create_auditoria_receita.sql
+                        cat database/003_create_auditoria_receita.sql | \
+                        sudo docker exec -i producao-db psql -U postgres -d tabela_receita 
                     "
                 '''
             }
