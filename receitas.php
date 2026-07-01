@@ -46,7 +46,7 @@ $result = pg_query($conn, $query);
     <div class="page-container">
         <div class="card-app">
             <div class="top-actions">
-                <h2>Receitas</h2>
+                <h2>Receitas top</h2>
 
                 <div>
                     <a href="cadastrar.php" class="btn btn-success btn-sm">Nova Receita</a>
