@@ -1,4 +1,4 @@
-CREATE TABLE IF NOT EXISTS auditoria_receita (
+CREATE TABLE IF NOT EXISTS categoria (
     id SERIAL PRIMARY KEY,
     id_receita INTEGER,
     acao VARCHAR(50) NOT NULL,

@@ -14,7 +14,7 @@ class ReceitaValidator
 
     public static function custoValido($custo)
     {
-        return is_numeric($custo) && $custo > 100;
+        return is_numeric($custo) && $custo > 0;
     }
 
     public static function tipoValido($tipo)
